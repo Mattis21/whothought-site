@@ -10,64 +10,78 @@
   <script defer src="script.js"></script>
 </head>
 <body class="dark-background">
-  <!-- Navigationsleiste -->
-  <nav class="nav-bar" style="justify-content: center;">
+  <!-- Header: Home zentriert -->
+  <nav class="nav-bar">
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
     </ul>
   </nav>
 
   <main class="results-main">
-    <!-- Suchfeld für neue Gedanken -->
-    <input
-      id="results-search"
-      class="results-search"
-      type="text"
-      placeholder="Was denkst du gerade?"
-      aria-label="Neuen Gedanken suchen"
-    />
+    <!-- Linke Spalte -->
+    <section class="left-col">
+      <div class="panel">
+        <!-- Suchfeld -->
+        <input
+          id="results-search"
+          class="results-search"
+          type="text"
+          placeholder="Was denkst du gerade?"
+          aria-label="Neuen Gedanken suchen"
+        />
 
-    <!-- Live-Zähler -->
-    <div class="live-count-wrapper">
-      <span id="results-live-count" class="results-live-count">0</span>
-      <span class="results-live-text">live</span>
-    </div>
-    <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
+        <!-- KPI-Zeile -->
+        <div class="kpi-row">
+          <div class="live-wrap">
+            <span id="results-live-count" class="results-live-count">0</span>
+            <span class="results-live-text">live</span>
+          </div>
+          <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
+        </div>
 
-    <!-- Kategorien -->
-    <div class="categories" role="tablist" aria-label="Region">
-      <button class="category active" type="button">Global</button>
-      <button class="category" type="button">DE</button>
-    </div>
+        <!-- Kategorien -->
+        <div class="categories" role="tablist" aria-label="Region">
+          <button class="category active" type="button">Global</button>
+          <button class="category" type="button">DE</button>
+        </div>
 
-    <!-- Chart Bereich -->
-    <div class="chart-wrapper" style="height:300px;">
-      <canvas id="liveChart" style="width:100%; height:100%;"></canvas>
-      <div class="time-range" aria-label="Zeitraum">
-        <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
-        <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
-        <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
-        <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
-        <button class="time-btn" data-range="max" type="button">Max</button>
+        <!-- Chart -->
+        <div class="chart-wrapper">
+          <canvas id="liveChart"></canvas>
+        </div>
+
+        <!-- Zeitbereich-Buttons -->
+        <div class="time-range" aria-label="Zeitraum">
+          <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
+          <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
+          <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
+          <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
+          <button class="time-btn" data-range="max" type="button">Max</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Gedanken-Ticker und Sprachen -->
-    <div class="ticker-langs">
-      <span class="ticker-label">Thoughts live ticker</span>
-      <span class="lang-options">English</span>
-      <span class="lang-options">Italian</span>
-      <span class="lang-options">French</span>
-    </div>
+      <!-- Ticker & Sprachen -->
+      <div class="panel soft">
+        <div class="ticker-langs">
+          <span class="ticker-label">Thoughts live ticker</span>
+          <span class="lang-options">English</span>
+          <span class="lang-options">Italian</span>
+          <span class="lang-options">French</span>
+        </div>
+      </div>
+    </section>
 
-    <!-- Rechtsseitiger Bereich mit verwandten Themen -->
-    <aside class="related-topics">
-      <h3>Verwandte Themen</h3>
-      <ul id="related-list" class="related-list"></ul>
+    <!-- Rechte Spalte -->
+    <aside class="right-col">
+      <div class="panel">
+        <h3>Verwandte Themen</h3>
+        <ul id="related-list" class="related-list"></ul>
+      </div>
     </aside>
 
-    <!-- Share Button -->
+    <!-- Share -->
     <button class="share-button" type="button" onclick="shareThought()">Share</button>
   </main>
 </body>
 </html>
+

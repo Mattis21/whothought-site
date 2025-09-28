@@ -17,14 +17,14 @@
     </ul>
   </nav>
 
-  <main class="results-main">
-    <!-- Linke Spalte -->
+  <main class="results-main tight">
+    <!-- Linke breite Spalte -->
     <section class="left-col">
-      <div class="panel">
-        <!-- Suchfeld -->
+      <div class="panel dense">
+        <!-- Suchfeld (kompakt) -->
         <input
           id="results-search"
-          class="results-search"
+          class="results-search compact"
           type="text"
           placeholder="Was denkst du gerade?"
           aria-label="Neuen Gedanken suchen"
@@ -39,29 +39,29 @@
           <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         </div>
 
-        <!-- Kategorien -->
-        <div class="categories" role="tablist" aria-label="Region">
-          <button class="category active" type="button">Global</button>
-          <button class="category" type="button">DE</button>
+        <!-- Kategorien + Zeitraum nebeneinander -->
+        <div class="controls-row">
+          <div class="categories" role="tablist" aria-label="Region">
+            <button class="category active" type="button">Global</button>
+            <button class="category" type="button">DE</button>
+          </div>
+          <div class="time-range" aria-label="Zeitraum">
+            <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
+            <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
+            <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
+            <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
+            <button class="time-btn" data-range="max" type="button">Max</button>
+          </div>
         </div>
 
-        <!-- Chart -->
-        <div class="chart-wrapper">
+        <!-- Chart groß & linksbündig -->
+        <div class="chart-wrapper large">
           <canvas id="liveChart"></canvas>
-        </div>
-
-        <!-- Zeitbereich-Buttons -->
-        <div class="time-range" aria-label="Zeitraum">
-          <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
-          <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
-          <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
-          <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
-          <button class="time-btn" data-range="max" type="button">Max</button>
         </div>
       </div>
 
-      <!-- Ticker & Sprachen -->
-      <div class="panel soft">
+      <!-- Ticker & Sprachen (schlank) -->
+      <div class="panel rowish">
         <div class="ticker-langs">
           <span class="ticker-label">Thoughts live ticker</span>
           <span class="lang-options">English</span>
@@ -71,9 +71,9 @@
       </div>
     </section>
 
-    <!-- Rechte Spalte -->
+    <!-- Rechte Spalte sticky -->
     <aside class="right-col">
-      <div class="panel">
+      <div class="panel dense">
         <h3>Verwandte Themen</h3>
         <ul id="related-list" class="related-list"></ul>
       </div>
@@ -84,4 +84,3 @@
   </main>
 </body>
 </html>
-

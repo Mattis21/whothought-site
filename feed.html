@@ -9,6 +9,7 @@
   <script defer src="script.js"></script>
 </head>
 <body class="dark-background has-sticky-footer">
+  <!-- Header -->
   <nav class="nav-bar">
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -16,10 +17,19 @@
   </nav>
 
   <main class="results-main tight">
+    <!-- Linke Spalte -->
     <section class="left-col">
       <div class="panel dense">
-        <input id="results-search" class="results-search compact" type="text" placeholder="Was denkst du gerade?" aria-label="Neuen Gedanken suchen" />
+        <!-- Suche -->
+        <input
+          id="results-search"
+          class="results-search compact"
+          type="text"
+          placeholder="Was denkst du gerade?"
+          aria-label="Neuen Gedanken suchen"
+        />
 
+        <!-- KPIs -->
         <div class="kpi-row">
           <div class="live-wrap">
             <span id="results-live-count" class="results-live-count">0</span>
@@ -28,6 +38,7 @@
           <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         </div>
 
+        <!-- Region -->
         <div class="controls-row">
           <div class="categories" role="tablist" aria-label="Region">
             <button class="category active" type="button">Global</button>
@@ -35,9 +46,11 @@
           </div>
         </div>
 
-        <!-- Chart-Container mit Buttons unten links -->
+        <!-- Chart -->
         <div class="chart-wrapper large">
           <canvas id="liveChart"></canvas>
+
+          <!-- Zeitraum-Buttons unten links IM Chart -->
           <div class="chart-controls">
             <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
             <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
@@ -45,10 +58,14 @@
             <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
             <button class="time-btn" data-range="max" type="button">Max</button>
           </div>
+
+          <!-- Live-Badge unten rechts IM Chart -->
+          <div id="chartBadge" class="chart-badge">—</div>
         </div>
       </div>
     </section>
 
+    <!-- Rechte Spalte -->
     <aside class="right-col">
       <div class="panel dense">
         <h3>Verwandte Themen</h3>
@@ -59,6 +76,7 @@
     <button class="share-button" type="button" onclick="shareThought()">Share</button>
   </main>
 
+  <!-- Sticky Footer -->
   <footer class="footer sticky-footer">
     <div class="ticker-langs">
       <span class="ticker-label">Thoughts live ticker</span>

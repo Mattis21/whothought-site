@@ -34,15 +34,15 @@ body { line-height: 1.5; color: #e6ecff; }
 .results-search:focus{ outline:none; border-color:#5c9eff; }
 .results-search::placeholder{ color:rgba(255,255,255,0.62); }
 
-/* KPI row */
+/* KPIs */
 .kpi-row{ display:flex; align-items:flex-end; gap:16px; margin-bottom:16px; }
 .live-wrap{ display:flex; align-items:baseline; gap:8px; }
 .results-live-count{ font-size:3rem; color:#6dd5fa; line-height:1; }
 .results-live-text{ font-size:1.2rem; color:#6dd5fa; opacity:.95; }
 .results-change{ color:#2fd472; font-size:.95rem; margin-left:auto; }
 
-/* Controls (Region) */
-.controls-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+/* Region row */
+.controls-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
 .categories{ display:flex; gap:8px; flex-wrap:wrap; }
 .category{ padding:.35rem .85rem; border-radius:18px; border:none; cursor:pointer; background:rgba(255,255,255,0.1); color:#a9bdf8; font-size:.82rem; font-weight:600; transition:background .18s; }
 .category.active, .category:hover{ background:rgba(113,90,255,0.5); color:#fff; }
@@ -50,25 +50,30 @@ body { line-height: 1.5; color: #e6ecff; }
 /* Chart */
 .chart-wrapper{
   position:relative;
-  width:100%; height:440px;
+  width:100%; height:460px;
   background:rgba(0,0,0,0.18);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;
   padding:12px;
 }
-.chart-wrapper.large{ height:460px; }
 canvas#liveChart{ width:100% !important; height:100% !important; }
 
-/* Zeit-Buttons unten links IM Chart */
-.chart-controls{
-  position:absolute; left:14px; bottom:12px;
-  display:flex; gap:8px; flex-wrap:wrap;
-}
+/* Zeit-Buttons unten links im Chart */
+.chart-controls{ position:absolute; left:14px; bottom:12px; display:flex; gap:8px; flex-wrap:wrap; }
 .time-btn{
   padding:.35rem .75rem; border:none; border-radius:10px;
   background:rgba(255,255,255,0.10); color:#a9bdf8; cursor:pointer; font-size:.78rem; font-weight:600; transition:background .18s;
 }
 .time-btn.active, .time-btn:hover{ background:rgba(113,90,255,0.5); color:#fff; }
+
+/* Live-Badge unten rechts im Chart */
+.chart-badge{
+  position:absolute; right:14px; bottom:12px;
+  padding:.35rem .6rem; border-radius:8px;
+  background:rgba(12,18,40,0.85);
+  border:1px solid rgba(255,255,255,0.15);
+  font-size:.78rem; color:#cfe6ff;
+}
 
 /* Right rail */
 .right-col{ position:sticky; top:22px; height:fit-content; }
@@ -104,4 +109,3 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
 .suggestions .suggestion-count{ font-size:.9rem; color:#88a8ff; }
 .home-live-ticker{ margin-top:3rem; font-size:1rem; color:#88a8ff; }
 .home-footer{ height:4rem; }
-

@@ -14,10 +14,10 @@
     <nav class="nav-bar">
         <div class="nav-logo"><a href="index.html">WHOthought</a></div>
         <ul class="nav-links">
+            <!-- Only show the Home link on the results page -->
             <li><a href="index.html">Home</a></li>
-            
         </ul>
-        <div class="nav-user-icon">\u{1F464}</div>
+        <div class="nav-user-icon">👤</div>
     </nav>
 
     <main class="results-main">
@@ -31,15 +31,20 @@
         <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         <!-- Kategorien -->
         <div class="categories">
+            <!-- Only show Global and DE categories -->
             <button class="category active">Global</button>
-            <button class="category">DE</button>>
+            <button class="category">DE</button>
         </div>
         <!-- Chart Bereich -->
         <div class="chart-wrapper">
             <canvas id="liveChart"></canvas>
+            <!-- Time range buttons: 24h, 7d, 30d, 1 year, max -->
             <div class="time-range">
-              "7d">7 d</button>
+                <button class="time-btn active" data-range="24h">24 h</button>
+                <button class="time-btn" data-range="7d">7 d</button>
                 <button class="time-btn" data-range="30d">30 d</button>
+                <button class="time-btn" data-range="1y">1 Jahr</button>
+                <button class="time-btn" data-range="max">Max</button>
             </div>
         </div>
         <!-- Gedanken-Ticker und Sprachen -->

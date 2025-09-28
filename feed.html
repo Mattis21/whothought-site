@@ -21,8 +21,8 @@
     </nav>
 
     <main class="results-main">
-        <!-- Suchblasenanzeige -->
-    <iinput id="results-search" class="results-search" type="text" placeholder="Was denkst du gerade?">
+        <!-- Suchfeld für neue Gedanken -->
+        <input id="results-search" class="results-search" type="text" placeholder="Was denkst du gerade?">
         <!-- Live-Zähler -->
         <div class="live-count-wrapper">
             <span id="results-live-count" class="results-live-count">0</span>
@@ -31,14 +31,13 @@
         <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         <!-- Kategorien -->
         <div class="categories">
-            <!-- Only show Global and DE categories -->
             <button class="category active">Global</button>
             <button class="category">DE</button>
         </div>
         <!-- Chart Bereich -->
-        <div class="chart-wrapper">
+        <div class="chart-wrapper" style="height:300px;">
             <canvas id="liveChart"></canvas>
-            <!-- Time range buttons: 24h, 7d, 30d, 1 year, max -->
+            <!-- Zeitbereiche -->
             <div class="time-range">
                 <button class="time-btn active" data-range="24h">24 h</button>
                 <button class="time-btn" data-range="7d">7 d</button>
@@ -62,6 +61,5 @@
         <!-- Share Button -->
         <button class="share-button" onclick="shareThought()">Share</button>
     </main>
-
 </body>
 </html>

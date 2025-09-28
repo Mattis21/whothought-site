@@ -72,13 +72,24 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
   padding-left:4px;    /* leicht eingerückt */
 }
 
-  justify-content:flex-start;/* linksbündig; auf Wunsch: center */
+.time-btn {
+  padding: .35rem .85rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #a9bdf8;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 600;
+  transition: background .18s;
 }
-.time-btn{
-  padding:.35rem .75rem; border:none; border-radius:10px;
-  background:rgba(255,255,255,0.10); color:#a9bdf8; cursor:pointer; font-size:.78rem; font-weight:600; transition:background .18s;
+.time-btn.active,
+.time-btn:hover {
+  background: rgba(113, 90, 255, 0.5);
+    color: #fff;
+ 
 }
-.time-btn.active, .time-btn:hover{ background:rgba(113,90,255,0.5); color:#fff; }
+
 
 /* Live-Badge unten rechts IM Chart */
 .chart-badge{

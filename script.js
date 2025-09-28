@@ -25,7 +25,7 @@ function initHomePage() {
     const matches = suggestionData.filter(item => item.text.toLowerCase().includes(lower));
     matches.forEach(item => {
       const li = document.createElement('li');
-      li.innerHTML = `<span>${item.text}</span><span class=\"suggestion-count\">${item.count} live</span>`;
+      li.innerHTML = `<span>${item.text}</span><span class="suggestion-count">${item.count} live</span>`;
       li.addEventListener('click', () => {
         goToResults(item.text);
       });
@@ -60,7 +60,7 @@ function initHomePage() {
   function updateLiveTicker() {
     const randomIndex = getRandomInt(0, suggestionData.length - 1);
     const item = suggestionData[randomIndex];
-    liveTicker.innerHTML = `🔥 <span id=\"live-count\">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
+    liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
   }
   updateLiveTicker();
 }
@@ -95,28 +95,66 @@ function initResultsPage() {
   relatedList.innerHTML = '';
   relatedTopics.forEach(topic => {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${topic.text}</span><span class=\"count\">${topic.count}</span>`;
+    li.innerHTML = `<span>${topic.text}</span><span class="count">${topic.count}</span>`;
     li.addEventListener('click', () => {
       window.location.href = `feed.html?q=${encodeURIComponent(topic.text)}`;
     });
     relatedList.appendChild(li);
   });
+
+  // Event-Handler für Zeitbereichs-Buttons (24h, 7d, 30d, 1y, max)
+  const timeButtons = document.querySelectorAll('.time-btn');
+  timeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // aktive Klasse umschalten
+      const activeBtn = document.querySelector('.time-btn.active');
+      if (activeBtn) activeBtn.classList.remove('active');
+      btn.classList.add('active');
+      const range = btn.getAttribute('data-range');
+      updateChart(range);
+    });
+  });
 }
 
-// Zeichne das Liniendiagramm mit Chart.js
+// Zeichne das Liniendiagramm mit Chart.js und unterstütze verschiedene Zeitbereiche
+// Der Chart wird global gespeichert, um später aktualisiert zu werden.
+let myChart;
+
+// Vordefinierte Daten und Labels für verschiedene Zeiträume
+const chartData = {
+  '24h': {
+    labels: Array.from({ length: 24 }, (_, i) => `${i + 1} h`),
+    data: Array.from({ length: 24 }, () => getRandomInt(100, 500))
+  },
+  '7d': {
+    labels: Array.from({ length: 7 }, (_, i) => `${i + 1} d`),
+    data: Array.from({ length: 7 }, () => getRandomInt(100, 500))
+  },
+  '30d': {
+    labels: Array.from({ length: 30 }, (_, i) => `${i + 1} d`),
+    data: Array.from({ length: 30 }, () => getRandomInt(100, 500))
+  },
+  '1y': {
+    labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+    data: Array.from({ length: 12 }, () => getRandomInt(100, 500))
+  },
+  'max': {
+    // Beispielhaft über 5 Jahre mit Jahren als Labels
+    labels: ['2019','2020','2021','2022','2023','2024','2025'],
+    data: Array.from({ length: 7 }, () => getRandomInt(100, 500))
+  }
+};
+
+// Erstellt den Chart mit dem Standardbereich (24h)
 function drawChart() {
   const ctx = document.getElementById('liveChart').getContext('2d');
-  // Erstelle zufällige Datenpunkte
-  const dataPoints = [];
-  for (let i = 0; i < 20; i++) {
-    dataPoints.push(getRandomInt(100, 500));
-  }
-  new Chart(ctx, {
+  const { labels, data } = chartData['24h'];
+  myChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: Array.from({ length: dataPoints.length }, (_, i) => i + 1),
+      labels: labels,
       datasets: [{
-        data: dataPoints,
+        data: data,
         borderColor: '#6dd5fa',
         backgroundColor: 'transparent',
         tension: 0.3
@@ -139,6 +177,15 @@ function drawChart() {
       }
     }
   });
+}
+
+// Aktualisiert den Chart basierend auf dem ausgewählten Zeitraum
+function updateChart(range) {
+  if (!myChart || !chartData[range]) return;
+  const { labels, data } = chartData[range];
+  myChart.data.labels = labels;
+  myChart.data.datasets[0].data = data;
+  myChart.update();
 }
 
 // Share-Funktion (einfach kopieren des Links)

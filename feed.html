@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script defer src="script.js"></script>
 </head>
-<body class="dark-background">
+<body class="dark-background has-sticky-footer">
   <!-- Header -->
   <nav class="nav-bar">
     <ul class="nav-links">
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Chart -->
-        <div class="chart-wrapper large with-gap">
+        <div class="chart-wrapper large pushed-down">
           <canvas id="liveChart"></canvas>
         </div>
       </div>
@@ -73,8 +73,8 @@
     <button class="share-button" type="button" onclick="shareThought()">Share</button>
   </main>
 
-  <!-- Footer mit Ticker -->
-  <footer class="footer">
+  <!-- Fixierter Footer mit Ticker -->
+  <footer class="footer sticky-footer">
     <div class="ticker-langs">
       <span class="ticker-label">Thoughts live ticker</span>
       <span class="lang-options">English</span>
@@ -84,4 +84,3 @@
   </footer>
 </body>
 </html>
-

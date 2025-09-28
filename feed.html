@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHOthought – Ergebnisse</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body class="dark-background">
+    <!-- Navigationsleiste -->
+    <nav class="nav-bar">
+        <div class="nav-logo"><a href="index.html">WHOthought</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" onclick="return false;">Bubbles</a></li>
+            <li><a href="feed.html">Feed</a></li>
+            <li><a href="#" onclick="return false;">Profil</a></li>
+        </ul>
+        <div class="nav-user-icon">\u{1F464}</div>
+    </nav>
+
+    <main class="results-main">
+        <!-- Suchblasenanzeige -->
+        <div id="results-query" class="results-query">Suchbegriff</div>
+        <!-- Live-Zähler -->
+        <div class="live-count-wrapper">
+            <span id="results-live-count" class="results-live-count">0</span>
+            <span class="results-live-text">live</span>
+        </div>
+        <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
+        <!-- Kategorien -->
+        <div class="categories">
+            <button class="category active">Global</button>
+            <button class="category">DE</button>
+            <button class="category">Shoe</button>
+            <button class="category">Fashion</button>
+            <button class="category">Footwear</button>
+        </div>
+        <!-- Chart Bereich -->
+        <div class="chart-wrapper">
+            <canvas id="liveChart"></canvas>
+            <div class="time-range">
+                <button class="time-btn active" data-range="now">Jetzt</button>
+                <button class="time-btn" data-range="24h">24 h</button>
+                <button class="time-btn" data-range="7d">7 d</button>
+                <button class="time-btn" data-range="30d">30 d</button>
+            </div>
+        </div>
+        <!-- Gedanken-Ticker und Sprachen -->
+        <div class="ticker-langs">
+            <span class="ticker-label">Thoughts live ticker</span>
+            <span class="lang-options">English</span>
+            <span class="lang-options">Italian</span>
+            <span class="lang-options">French</span>
+        </div>
+        <!-- Rechtsseitiger Bereich mit verwandten Themen -->
+        <aside class="related-topics">
+            <h3>Verwandte Themen</h3>
+            <ul id="related-list" class="related-list"></ul>
+        </aside>
+        <!-- Share Button -->
+        <button class="share-button" onclick="shareThought()">Share</button>
+    </main>
+
+</body>
+</html>

@@ -47,23 +47,21 @@
         </div>
 
         <!-- Chart -->
-        <div class="chart-wrapper large">
-          <canvas id="liveChart"></canvas>
+<div class="chart-wrapper large">
+  <canvas id="liveChart"></canvas>
 
-          <!-- Zeitraum-Buttons unten links IM Chart -->
-          <div class="chart-controls">
-            <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
-            <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
-            <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
-            <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
-            <button class="time-btn" data-range="max" type="button">Max</button>
-          </div>
+  <!-- Live-Badge unten rechts IM Chart -->
+  <div id="chartBadge" class="chart-badge">—</div>
 
-          <!-- Live-Badge unten rechts IM Chart -->
-          <div id="chartBadge" class="chart-badge">—</div>
-        </div>
-      </div>
-    </section>
+  <!-- Zeitraum-Buttons UNTER dem Chart -->
+  <div class="chart-controls below">
+    <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
+    <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
+    <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
+    <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
+    <button class="time-btn" data-range="max" type="button">Max</button>
+  </div>
+</div>
 
     <!-- Rechte Spalte -->
     <aside class="right-col">

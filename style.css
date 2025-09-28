@@ -63,7 +63,8 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
   display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
 }
 .chart-controls.below {
-  position:static;           /* im normalen Flow */
+ .chart-controls.below { position:static; justify-content:center; }
+         /* im normalen Flow */
   justify-content:flex-start;/* linksbündig; auf Wunsch: center */
 }
 .time-btn{

@@ -48,7 +48,7 @@ function initResultsPage() {
   changeElem.textContent = `${diffText} in den letzten 5 Minuten`;
   changeElem.style.color = diff >= 0 ? '#2fd472' : '#e3626b';
 
-  drawChart(); // init → setzt auch Badge
+  drawChart();
   if (badge) badge.textContent = `${baseCount} live`;
 
   // Related
@@ -77,25 +77,47 @@ function initResultsPage() {
     });
   });
 
+  // Region buttons
+  document.querySelectorAll('.category').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const active=document.querySelector('.category.active');
+      if(active) active.classList.remove('active');
+      btn.classList.add('active');
+      currentRegion = btn.textContent.trim().toLowerCase() === 'de' ? 'de' : 'global';
+      const activeRange = document.querySelector('.time-btn.active')?.getAttribute('data-range') || '24h';
+      updateChart(activeRange);
+    });
+  });
+
   // Search enter
   if(resultsSearch){
-    resultsSearch.addEventListener('keypress',e=>{
+    resultsSearch.addEventListener('keypress', e=>{
       if(e.key==='Enter'){ e.preventDefault(); const q=resultsSearch.value.trim(); if(q) window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
     });
   }
 }
 
-// ===== Chart.js (Börsen-Look + Crosshair + Tooltip) =====
+// ===== Chart.js (Ãsen-Look + Crosshair + Tooltip) =====
 let myChart;
+let currentRegion = 'global';
 
 // data
 const chartData = {
   '24h': { labels: Array.from({length:24},(_,i)=>`${i+1} h`),  data: Array.from({length:24},()=>getRandomInt(120,520)) },
   '7d' : { labels: Array.from({length:7 },(_,i)=>`${i+1} d`),  data: Array.from({length:7 },()=>getRandomInt(120,520)) },
   '30d': { labels: Array.from({length:30},(_,i)=>`${i+1} d`),  data: Array.from({length:30},()=>getRandomInt(120,520)) },
-  '1y' : { labels: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], data: Array.from({length:12},()=>getRandomInt(120,520)) },
+  '1y' : { labels: ['Jan','Feb','MÃ¤r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], data: Array.from({length:12},()=>getRandomInt(120,520)) },
   'max': { labels: ['2019','2020','2021','2022','2023','2024','2025'], data: Array.from({length:7},()=>getRandomInt(120,520)) },
 };
+
+// Generate DE dataset based on global data
+const chartDataDe = {};
+for (const range in chartData) {
+  chartDataDe[range] = {
+    labels: chartData[range].labels,
+    data: chartData[range].data.map(v => Math.floor(v * 0.6))
+  };
+}
 
 // dataset builder (gradient fill)
 function makeDataset(ctx, data){
@@ -183,12 +205,13 @@ function drawChart(){
 
 function updateChart(range){
   const canvas = document.getElementById('liveChart');
-  if(!myChart || !chartData[range] || !canvas) return;
-  const {labels, data} = chartData[range];
+  const dataObj = currentRegion === 'de' ? chartDataDe[range] : chartData[range];
+  if(!myChart || !dataObj || !canvas) return;
+  const {labels, data} = dataObj;
   const ctx = canvas.getContext('2d');
 
   myChart.data.labels = labels;
-  myChart.data.datasets[0] = makeDataset(ctx, data); // reapply gradient
+  myChart.data.datasets[0] = makeDataset(ctx, data);
   myChart.update();
 
   const badge = document.getElementById('chartBadge');

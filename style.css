@@ -58,15 +58,21 @@ body { line-height: 1.5; color: #e6ecff; }
 }
 canvas#liveChart{ width:100% !important; height:100% !important; }
 
-/* Zeit-Buttons unten links im Chart */
-.chart-controls{ position:absolute; left:14px; bottom:12px; display:flex; gap:8px; flex-wrap:wrap; }
+/* Zeit-Buttons – jetzt UNTER dem Chart, aber in der Box */
+.chart-controls { 
+  display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
+}
+.chart-controls.below {
+  position:static;           /* im normalen Flow */
+  justify-content:flex-start;/* linksbündig; auf Wunsch: center */
+}
 .time-btn{
   padding:.35rem .75rem; border:none; border-radius:10px;
   background:rgba(255,255,255,0.10); color:#a9bdf8; cursor:pointer; font-size:.78rem; font-weight:600; transition:background .18s;
 }
 .time-btn.active, .time-btn:hover{ background:rgba(113,90,255,0.5); color:#fff; }
 
-/* Live-Badge unten rechts im Chart */
+/* Live-Badge unten rechts IM Chart */
 .chart-badge{
   position:absolute; right:14px; bottom:12px;
   padding:.35rem .6rem; border-radius:8px;

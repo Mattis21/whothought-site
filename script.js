@@ -1,59 +1,31 @@
-// =============== Helpers ===============
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// Helpers
+function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-// =============== Home-Seite ===============
+// Home
 function initHomePage() {
   const searchInput = document.getElementById('home-search');
   const suggestionsList = document.getElementById('suggestions');
   const liveTicker = document.getElementById('home-live-ticker');
-
   const suggestionData = [
     { text: 'Schuhtrends 2025', count: 1203 },
     { text: 'Schuhsohlen nachhaltige', count: 420 },
     { text: 'Sneaker neue Modelle', count: 870 },
     { text: 'Barfußlaufen Vorteile', count: 310 },
   ];
-
-  function updateSuggestions(value) {
-    suggestionsList.innerHTML = '';
-    if (!value) return;
-    const lower = value.toLowerCase();
-    const matches = suggestionData.filter((item) =>
-      item.text.toLowerCase().includes(lower)
-    );
-    matches.forEach((item) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${item.text}</span><span class="suggestion-count">${item.count} live</span>`;
-      li.addEventListener('click', () => goToResults(item.text));
-      suggestionsList.appendChild(li);
-    });
+  function updateSuggestions(v){ suggestionsList.innerHTML=''; if(!v) return;
+    const m = suggestionData.filter(i => i.text.toLowerCase().includes(v.toLowerCase()));
+    m.forEach(i => { const li=document.createElement('li');
+      li.innerHTML=`<span>${i.text}</span><span class="suggestion-count">${i.count} live</span>`;
+      li.addEventListener('click',()=>goToResults(i.text)); suggestionsList.appendChild(li); });
   }
-
-  function goToResults(query) {
-    const encoded = encodeURIComponent(query);
-    window.location.href = `feed.html?q=${encoded}`;
-  }
-
-  // Events
-  searchInput.addEventListener('input', (e) => updateSuggestions(e.target.value));
-  searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const query = searchInput.value.trim();
-      if (query) goToResults(query);
-    }
-  });
-
-  function updateLiveTicker() {
-    const item = suggestionData[getRandomInt(0, suggestionData.length - 1)];
-    liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
-  }
-  updateLiveTicker();
+  function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
+  searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
+  searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
+  const item = suggestionData[getRandomInt(0, suggestionData.length-1)];
+  liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
 }
 
-// =============== Ergebnisseite ===============
+// Results
 function initResultsPage() {
   const resultsSearch = document.getElementById('results-search');
   const liveCountElem = document.getElementById('results-live-count');
@@ -62,9 +34,8 @@ function initResultsPage() {
 
   const params = new URLSearchParams(window.location.search);
   const query = params.get('q') || 'Gedanke';
-  if (resultsSearch) resultsSearch.value = query;
+  if(resultsSearch) resultsSearch.value = query;
 
-  // Live-Zahlen
   const baseCount = getRandomInt(200, 1500);
   const diff = getRandomInt(-50, 50);
   liveCountElem.textContent = baseCount;
@@ -72,140 +43,122 @@ function initResultsPage() {
   changeElem.textContent = `${diffText} in den letzten 5 Minuten`;
   changeElem.style.color = diff >= 0 ? '#2fd472' : '#e3626b';
 
-  // Chart initial
-  drawChart();
+  drawChart(); // init
 
-  // Verwandte Themen
   const relatedTopics = [
-    { text: 'Schuhpflege',       count: getRandomInt(100, 500) },
-    { text: 'Schuhtrends',       count: getRandomInt(100, 500) },
-    { text: 'Einlegesohlen',     count: getRandomInt(50, 300) },
-    { text: 'Sneaker Pflege',    count: getRandomInt(50, 200) },
+    { text:'Schuhpflege', count:getRandomInt(100,500) },
+    { text:'Schuhtrends', count:getRandomInt(100,500) },
+    { text:'Einlegesohlen', count:getRandomInt(50,300) },
+    { text:'Sneaker Pflege', count:getRandomInt(50,200) },
   ];
-  relatedList.innerHTML = '';
-  relatedTopics.forEach((topic) => {
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${topic.text}</span><span class="count">${topic.count}</span>`;
-    li.addEventListener('click', () => {
-      window.location.href = `feed.html?q=${encodeURIComponent(topic.text)}`;
-    });
+  relatedList.innerHTML='';
+  relatedTopics.forEach(t=>{ const li=document.createElement('li');
+    li.innerHTML=`<span>${t.text}</span><span class="count">${t.count}</span>`;
+    li.addEventListener('click',()=>{ window.location.href = `feed.html?q=${encodeURIComponent(t.text)}`; });
     relatedList.appendChild(li);
   });
 
-  // Zeitbereiche
-  const timeButtons = document.querySelectorAll('.time-btn');
-  timeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const activeBtn = document.querySelector('.time-btn.active');
-      if (activeBtn) activeBtn.classList.remove('active');
-      btn.classList.add('active');
-      const range = btn.getAttribute('data-range');
-      updateChart(range);
+  // Zeit-Buttons im Chart
+  document.querySelectorAll('.time-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const active=document.querySelector('.time-btn.active'); if(active) active.classList.remove('active');
+      btn.classList.add('active'); updateChart(btn.getAttribute('data-range'));
     });
   });
 
-  // Neue Suche
-  if (resultsSearch) {
-    resultsSearch.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const newQuery = resultsSearch.value.trim();
-        if (newQuery) {
-          window.location.href = `feed.html?q=${encodeURIComponent(newQuery)}`;
-        }
-      }
+  if(resultsSearch){
+    resultsSearch.addEventListener('keypress',e=>{
+      if(e.key==='Enter'){ e.preventDefault(); const q=resultsSearch.value.trim(); if(q) window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
     });
   }
 }
 
-// ===== Chart.js Setup =====
+// ===== Chart.js wie im MVP / Börsen-Look =====
 let myChart;
 const chartData = {
-  '24h': {
-    labels: Array.from({ length: 24 }, (_, i) => `${i + 1} h`),
-    data: Array.from({ length: 24 }, () => getRandomInt(100, 500)),
-  },
-  '7d': {
-    labels: Array.from({ length: 7 }, (_, i) => `${i + 1} d`),
-    data: Array.from({ length: 7 }, () => getRandomInt(100, 500)),
-  },
-  '30d': {
-    labels: Array.from({ length: 30 }, (_, i) => `${i + 1} d`),
-    data: Array.from({ length: 30 }, () => getRandomInt(100, 500)),
-  },
-  '1y': {
-    labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-    data: Array.from({ length: 12 }, () => getRandomInt(100, 500)),
-  },
-  max: {
-    labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-    data: Array.from({ length: 7 }, () => getRandomInt(100, 500)),
-  },
+  '24h': { labels: Array.from({length:24},(_,i)=>`${i+1} h`),  data: Array.from({length:24},()=>getRandomInt(120,520)) },
+  '7d' : { labels: Array.from({length:7 },(_,i)=>`${i+1} d`),  data: Array.from({length:7 },()=>getRandomInt(120,520)) },
+  '30d': { labels: Array.from({length:30},(_,i)=>`${i+1} d`),  data: Array.from({length:30},()=>getRandomInt(120,520)) },
+  '1y' : { labels: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], data: Array.from({length:12},()=>getRandomInt(120,520)) },
+  'max': { labels: ['2019','2020','2021','2022','2023','2024','2025'], data: Array.from({length:7},()=>getRandomInt(120,520)) },
 };
 
-function drawChart() {
+function makeDataset(ctx, data){
+  const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+  grad.addColorStop(0, 'rgba(109,213,250,0.28)');
+  grad.addColorStop(1, 'rgba(109,213,250,0.00)');
+  return {
+    data,
+    borderColor: '#6dd5fa',
+    backgroundColor: grad,
+    fill: true,
+    tension: 0.35,
+    borderWidth: 3,
+    pointRadius: 0,
+    hoverRadius: 0,
+  };
+}
+
+function drawChart(){
   const canvas = document.getElementById('liveChart');
-  if (!canvas) return;
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const { labels, data } = chartData['24h'];
+  const {labels, data} = chartData['24h'];
 
   myChart = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          data,
-          borderColor: '#6dd5fa',
-          backgroundColor: 'transparent',
-          tension: 0.3,
-          borderWidth: 3,
-          pointRadius: 0,
-        },
-      ],
-    },
+    data: { labels, datasets: [makeDataset(ctx, data)] },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { enabled: false },
+        tooltip: {
+          enabled: true,
+          mode: 'index',
+          intersect: false,
+          displayColors: false,
+          backgroundColor: 'rgba(12,18,40,0.9)',
+          borderColor: 'rgba(255,255,255,0.15)',
+          borderWidth: 1,
+          padding: 8,
+          callbacks: {
+            title: items => items[0].label,
+            label: item => ` ${Math.round(item.parsed.y)} live`,
+          },
+        },
       },
       scales: {
-        x: { display: false },
-        y: { display: false },
+        x: { ticks: { color:'#a7b8e6', maxTicksLimit:6 }, grid: { display:false } },
+        y: { ticks: { color:'#a7b8e6', maxTicksLimit:5 }, grid: { color:'#203056' } },
       },
+      elements: { line: { capBezierPoints:true } },
+      interaction: { intersect:false, mode:'index' }
     },
   });
 }
 
-function updateChart(range) {
-  if (!myChart || !chartData[range]) return;
-  const { labels, data } = chartData[range];
+function updateChart(range){
+  const canvas = document.getElementById('liveChart');
+  if(!myChart || !chartData[range] || !canvas) return;
+  const {labels, data} = chartData[range];
+  const ctx = canvas.getContext('2d');
   myChart.data.labels = labels;
-  myChart.data.datasets[0].data = data;
+  myChart.data.datasets[0] = makeDataset(ctx, data); // neuen Gradient anwenden
   myChart.update();
 }
 
-// ===== Share =====
+// Share
 function shareThought() {
   const url = window.location.href;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(() => {
-      alert('Link zum Teilen wurde kopiert!');
-    });
-  } else {
-    prompt('Kopiere den Link:', url);
-  }
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(()=>alert('Link zum Teilen wurde kopiert!'));
+  else prompt('Kopiere den Link:', url);
 }
 
-// ===== Bootstrap =====
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('home-search')) {
-    initHomePage();
-  }
-  if (document.getElementById('results-search') || document.getElementById('liveChart')) {
-    initResultsPage();
-  }
+// Bootstrap
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(document.getElementById('home-search')) initHomePage();
+  if(document.getElementById('results-search') || document.getElementById('liveChart')) initResultsPage();
 });
+
 

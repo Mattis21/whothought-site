@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHOthought – Ergebnisse</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WHOthought – Ergebnisse</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body class="dark-background">
-    <!-- Navigationsleiste -->
-    <nav class="nav-bar">
-        <div class="nav-logo"><a href="index.html">WHOthought</a></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-        </ul>
-        <div class="nav-user-icon">👤</div>
-    </nav>
+  <!-- Navigationsleiste -->
+  <nav class="nav-bar">
+    <div class="nav-logo"><a href="index.html">WHOthought</a></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+    </ul>
+    <div class="nav-user-icon" aria-label="Profil">👤</div>
+  </nav>
 
-    <main class="results-main">
-        <!-- Suchfeld für neue Gedanken -->
-        <input id="results-search" class="results-search" type="text" placeholder="Was denkst du gerade?">
-        <!-- Live-Zähler -->
-        <div class="live-count-wrapper">
-            <span id="results-live-count" class="results-live-count">0</span>
-            <span class="results-live-text">live</span>
-        </div>
-        <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
-        <!-- Kategorien -->
-        <div class="categories">
-            <button class="category active">Global</button>
-            <button class="category">DE</button>
-        </div>
-        <!-- Chart Bereich -->
-        <div class="chart-wrapper" style="height:300px;">
-            <canvas id="liveChart" style="width:100%; height:100%;"></canvas>
-            <div class="time-range">
-                <button class="time-btn active" data-range="24h">24 h</button>
-                <button class="time-btn" data-range="7d">7 d</button>
-                <button class="time-btn" data-range="30d">30 d</button>
-                <button class="time-btn" data-range="1y">1 Jahr</button>
-                <button class="time-btn" data-range="max">Max</button>
-            </div>
-        </div>
-        <!-- Gedanken-Ticker und Sprachen -->
-        <div class="ticker-langs">
-            <span class="ticker-label">Thoughts live ticker</span>
-            <span class="lang-options">English</span>
-            <span class="lang-options">Italian</span>
-            <span class="lang-options">French</span>
-        </div>
-        <!-- Rechtsseitiger Bereich mit verwandten Themen -->
-        <aside class="related-topics">
-            <h3>Verwandte Themen</h3>
-            <ul id="related-list" class="related-list"></ul>
-        </aside>
-        <!-- Share Button -->
-        <button class="share-button" onclick="shareThought()">Share</button>
-    </main>
+  <main class="results-main">
+    <!-- Suchfeld für neue Gedanken -->
+    <input
+      id="results-search"
+      class="results-search"
+      type="text"
+      placeholder="Was denkst du gerade?"
+      aria-label="Neuen Gedanken suchen"
+    />
+
+    <!-- Live-Zähler -->
+    <div class="live-count-wrapper">
+      <span id="results-live-count" class="results-live-count">0</span>
+      <span class="results-live-text">live</span>
+    </div>
+    <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
+
+    <!-- Kategorien -->
+    <div class="categories" role="tablist" aria-label="Region">
+      <button class="category active" type="button">Global</button>
+      <button class="category" type="button">DE</button>
+    </div>
+
+    <!-- Chart Bereich -->
+    <div class="chart-wrapper" style="height:300px;">
+      <canvas id="liveChart" style="width:100%; height:100%;"></canvas>
+      <div class="time-range" aria-label="Zeitraum">
+        <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
+        <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
+        <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
+        <button class="time-btn" data-range="1y"  type="button">1&nbsp;Jahr</button>
+        <button class="time-btn" data-range="max" type="button">Max</button>
+      </div>
+    </div>
+
+    <!-- Gedanken-Ticker und Sprachen -->
+    <div class="ticker-langs">
+      <span class="ticker-label">Thoughts live ticker</span>
+      <span class="lang-options">English</span>
+      <span class="lang-options">Italian</span>
+      <span class="lang-options">French</span>
+    </div>
+
+    <!-- Rechtsseitiger Bereich mit verwandten Themen -->
+    <aside class="related-topics">
+      <h3>Verwandte Themen</h3>
+      <ul id="related-list" class="related-list"></ul>
+    </aside>
+
+    <!-- Share Button -->
+    <button class="share-button" type="button" onclick="shareThought()">Share</button>
+  </main>
 </body>
 </html>
-

@@ -10,7 +10,7 @@
   <script defer src="script.js"></script>
 </head>
 <body class="dark-background">
-  <!-- Header: Home zentriert -->
+  <!-- Header -->
   <nav class="nav-bar">
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -18,10 +18,10 @@
   </nav>
 
   <main class="results-main tight">
-    <!-- Linke breite Spalte -->
+    <!-- Linke Spalte -->
     <section class="left-col">
       <div class="panel dense">
-        <!-- Suchfeld (kompakt) -->
+        <!-- Suchfeld -->
         <input
           id="results-search"
           class="results-search compact"
@@ -39,7 +39,7 @@
           <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         </div>
 
-        <!-- Kategorien + Zeitraum nebeneinander -->
+        <!-- Kategorien + Zeitraum -->
         <div class="controls-row">
           <div class="categories" role="tablist" aria-label="Region">
             <button class="category active" type="button">Global</button>
@@ -54,24 +54,14 @@
           </div>
         </div>
 
-        <!-- Chart groß & linksbündig -->
-        <div class="chart-wrapper large">
+        <!-- Chart -->
+        <div class="chart-wrapper large with-gap">
           <canvas id="liveChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Ticker & Sprachen (schlank) -->
-      <div class="panel rowish">
-        <div class="ticker-langs">
-          <span class="ticker-label">Thoughts live ticker</span>
-          <span class="lang-options">English</span>
-          <span class="lang-options">Italian</span>
-          <span class="lang-options">French</span>
         </div>
       </div>
     </section>
 
-    <!-- Rechte Spalte sticky -->
+    <!-- Rechte Spalte -->
     <aside class="right-col">
       <div class="panel dense">
         <h3>Verwandte Themen</h3>
@@ -82,5 +72,16 @@
     <!-- Share -->
     <button class="share-button" type="button" onclick="shareThought()">Share</button>
   </main>
+
+  <!-- Footer mit Ticker -->
+  <footer class="footer">
+    <div class="ticker-langs">
+      <span class="ticker-label">Thoughts live ticker</span>
+      <span class="lang-options">English</span>
+      <span class="lang-options">Italian</span>
+      <span class="lang-options">French</span>
+    </div>
+  </footer>
 </body>
 </html>
+

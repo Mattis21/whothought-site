@@ -10,19 +10,20 @@ function initHomePage() {
   const liveTicker = document.getElementById('home-live-ticker');
   // Vordefinierte Vorschläge mit Live-Zahlen
   const suggestionData = [
-    { text: 'Schuhtrends 2025', count: 1203 },
-    { text: 'Schuhsohlen nachhaltige', count: 420 },
-    { text: 'Sneaker neue Modelle', count: 870 },
-    { text: 'Barfußlaufen Vorteile', count: 310 }
+    { text: 'Schuhtrends 2025', count: 1203 },
+    { text: 'Schuhsohlen nachhaltige', count: 420 },
+    { text: 'Sneaker neue Modelle', count: 870 },
+    { text: 'Barfußlaufen Vorteile', count: 310 }
   ];
 
   // Zeigt die Vorschläge passend zur Eingabe
   function updateSuggestions(value) {
-    // Leeren der Liste
     suggestionsList.innerHTML = '';
     if (!value) return;
     const lower = value.toLowerCase();
-    const matches = suggestionData.filter(item => item.text.toLowerCase().includes(lower));
+    const matches = suggestionData.filter(item =>
+      item.text.toLowerCase().includes(lower)
+    );
     matches.forEach(item => {
       const li = document.createElement('li');
       li.innerHTML = `<span>${item.text}</span><span class="suggestion-count">${item.count} live</span>`;
@@ -35,18 +36,17 @@ function initHomePage() {
 
   // Navigiert zur Ergebnisseite
   function goToResults(query) {
-    // Encode query for URL
     const encoded = encodeURIComponent(query);
     window.location.href = `feed.html?q=${encoded}`;
   }
 
   // Suchfeld-Eingabe überwachen
-  searchInput.addEventListener('input', (e) => {
+  searchInput.addEventListener('input', e => {
     updateSuggestions(e.target.value);
   });
 
   // Bei Enter die Suche starten
-  searchInput.addEventListener('keypress', (e) => {
+  searchInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const query = searchInput.value.trim();
@@ -60,7 +60,7 @@ function initHomePage() {
   function updateLiveTicker() {
     const randomIndex = getRandomInt(0, suggestionData.length - 1);
     const item = suggestionData[randomIndex];
-    liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
+    liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
   }
   updateLiveTicker();
 }
@@ -68,24 +68,26 @@ function initHomePage() {
 // Ergebnisseite Logik
 function initResultsPage() {
   const queryBubble = document.getElementById('results-query');
+  const resultsSearch = document.getElementById('results-search');
   const liveCountElem = document.getElementById('results-live-count');
   const changeElem = document.getElementById('results-change');
   const relatedList = document.getElementById('related-list');
   // Lese Suchparameter
   const params = new URLSearchParams(window.location.search);
   const query = params.get('q') || 'Gedanke';
-  // Setze Suchbegriff
-  queryBubble.textContent = query;
+  // Setze Suchbegriff in Bubble oder Input
+  if (queryBubble) queryBubble.textContent = query;
+  if (resultsSearch) resultsSearch.value = query;
   // Generiere Live-Zahlen
   const baseCount = getRandomInt(200, 1500);
   const diff = getRandomInt(-50, 50);
   liveCountElem.textContent = baseCount;
-  const diffText = diff >= 0 ? `▲ Zuwachs +${diff}` : `▼ Abnahme ${diff}`;
-  changeElem.textContent = diffText + ' in den letzten 5 Minuten';
+  const diffText = diff >= 0 ? `▲ Zuwachs +${diff}` : `▼ Abnahme ${diff}`;
+  changeElem.textContent = diffText + ' in den letzten 5 Minuten';
   changeElem.style.color = diff >= 0 ? '#2fd472' : '#e3626b';
   // Zeichne Diagramm
   drawChart();
-  // Fülle verwandte Themen (Beispiele)
+  // Fülle verwandte Themen
   const relatedTopics = [
     { text: 'Schuhpflege', count: getRandomInt(100, 500) },
     { text: 'Schuhtrends', count: getRandomInt(100, 500) },
@@ -106,7 +108,6 @@ function initResultsPage() {
   const timeButtons = document.querySelectorAll('.time-btn');
   timeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // aktive Klasse umschalten
       const activeBtn = document.querySelector('.time-btn.active');
       if (activeBtn) activeBtn.classList.remove('active');
       btn.classList.add('active');
@@ -114,10 +115,22 @@ function initResultsPage() {
       updateChart(range);
     });
   });
+
+  // Event-Handler für neue Suche aus der Ergebnisseite heraus
+  if (resultsSearch) {
+    resultsSearch.addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const newQuery = resultsSearch.value.trim();
+        if (newQuery) {
+          window.location.href = `feed.html?q=${encodeURIComponent(newQuery)}`;
+        }
+      }
+    });
+  }
 }
 
-// Zeichne das Liniendiagramm mit Chart.js und unterstütze verschiedene Zeitbereiche
-// Der Chart wird global gespeichert, um später aktualisiert zu werden.
+// Chart.js: globale Variable
 let myChart;
 
 // Vordefinierte Daten und Labels für verschiedene Zeiträume
@@ -138,16 +151,17 @@ const chartData = {
     labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
     data: Array.from({ length: 12 }, () => getRandomInt(100, 500))
   },
-  'max': {
-    // Beispielhaft über 5 Jahre mit Jahren als Labels
-    labels: ['2019','2020','2021','2022','2023','2024','2025'],
+  max: {
+    labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
     data: Array.from({ length: 7 }, () => getRandomInt(100, 500))
   }
 };
 
 // Erstellt den Chart mit dem Standardbereich (24h)
 function drawChart() {
-  const ctx = document.getElementById('liveChart').getContext('2d');
+  const canvas = document.getElementById('liveChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
   const { labels, data } = chartData['24h'];
   myChart = new Chart(ctx, {
     type: 'line',
@@ -168,12 +182,8 @@ function drawChart() {
         tooltip: { enabled: false }
       },
       scales: {
-        x: {
-          display: false
-        },
-        y: {
-          display: false
-        }
+        x: { display: false },
+        y: { display: false }
       }
     }
   });
@@ -188,7 +198,7 @@ function updateChart(range) {
   myChart.update();
 }
 
-// Share-Funktion (einfach kopieren des Links)
+// Share-Funktion (Link kopieren)
 function shareThought() {
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(() => {
@@ -196,12 +206,13 @@ function shareThought() {
   });
 }
 
-// Initialisierung
+// Initialisierung: Home- oder Ergebnisseite starten
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('home-search')) {
     initHomePage();
   }
-  if (document.getElementById('results-query')) {
+  // Auf der Ergebnisseite gibt es entweder results-query (Bubble) oder results-search (Eingabe)
+  if (document.getElementById('results-query') || document.getElementById('results-search')) {
     initResultsPage();
   }
 });

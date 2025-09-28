@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WHOthought – Ergebnisse</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script defer src="script.js"></script>
 </head>
 <body class="dark-background has-sticky-footer">
-  <!-- Header -->
   <nav class="nav-bar">
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -18,19 +16,10 @@
   </nav>
 
   <main class="results-main tight">
-    <!-- Linke Spalte -->
     <section class="left-col">
       <div class="panel dense">
-        <!-- Suchfeld -->
-        <input
-          id="results-search"
-          class="results-search compact"
-          type="text"
-          placeholder="Was denkst du gerade?"
-          aria-label="Neuen Gedanken suchen"
-        />
+        <input id="results-search" class="results-search compact" type="text" placeholder="Was denkst du gerade?" aria-label="Neuen Gedanken suchen" />
 
-        <!-- KPI-Zeile -->
         <div class="kpi-row">
           <div class="live-wrap">
             <span id="results-live-count" class="results-live-count">0</span>
@@ -39,13 +28,17 @@
           <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         </div>
 
-        <!-- Kategorien + Zeitraum -->
         <div class="controls-row">
           <div class="categories" role="tablist" aria-label="Region">
             <button class="category active" type="button">Global</button>
             <button class="category" type="button">DE</button>
           </div>
-          <div class="time-range" aria-label="Zeitraum">
+        </div>
+
+        <!-- Chart-Container mit Buttons unten links -->
+        <div class="chart-wrapper large">
+          <canvas id="liveChart"></canvas>
+          <div class="chart-controls">
             <button class="time-btn active" data-range="24h" type="button">24&nbsp;h</button>
             <button class="time-btn" data-range="7d"  type="button">7&nbsp;d</button>
             <button class="time-btn" data-range="30d" type="button">30&nbsp;d</button>
@@ -53,15 +46,9 @@
             <button class="time-btn" data-range="max" type="button">Max</button>
           </div>
         </div>
-
-        <!-- Chart -->
-        <div class="chart-wrapper large pushed-down">
-          <canvas id="liveChart"></canvas>
-        </div>
       </div>
     </section>
 
-    <!-- Rechte Spalte -->
     <aside class="right-col">
       <div class="panel dense">
         <h3>Verwandte Themen</h3>
@@ -69,11 +56,9 @@
       </div>
     </aside>
 
-    <!-- Share -->
     <button class="share-button" type="button" onclick="shareThought()">Share</button>
   </main>
 
-  <!-- Fixierter Footer mit Ticker -->
   <footer class="footer sticky-footer">
     <div class="ticker-langs">
       <span class="ticker-label">Thoughts live ticker</span>

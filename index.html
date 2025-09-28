@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHOthought – Startseite</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WHOthought – Startseite</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
 <body class="dark-background">
-    <header class="home-header">
-        <h1 class="logo">WHOthought</h1>
-    </header>
-    <main class="home-main">
-        <!-- Frage-Bubble -->
-        <div class="question-bubble">
-            Was denkst du gerade?
-        </div>
-        <!-- Suchfeld mit Vorschlägen -->
-        <div class="home-search-wrapper">
-            <input type="text" id="home-search" class="home-search-input" placeholder="Gib einen Gedanken ein…" autocomplete="off">
-            <ul id="suggestions" class="suggestions"></ul>
-        </div>
-        <!-- Live-Ticker Hinweis -->
-        <div id="home-live-ticker" class="home-live-ticker">🔥&nbsp;<span id="live-count">420</span>&nbsp;Menschen denken gerade über Schuhsohlen nach</div>
-    </main>
-    <footer class="home-footer"></footer>
+  <header class="home-header">
+    <h1 class="logo">WHOthought</h1>
+  </header>
+
+  <main class="home-main">
+    <!-- Frage-Bubble -->
+    <div class="question-bubble">Was denkst du gerade?</div>
+
+    <!-- Suchfeld mit Vorschlägen -->
+    <div class="home-search-wrapper">
+      <input
+        type="text"
+        id="home-search"
+        class="home-search-input"
+        placeholder="Gib einen Gedanken ein…"
+        autocomplete="off"
+        aria-label="Gedanke eingeben"
+      />
+      <ul id="suggestions" class="suggestions"></ul>
+    </div>
+
+    <!-- Live-Ticker Hinweis -->
+    <div id="home-live-ticker" class="home-live-ticker">
+      🔥&nbsp;<span id="live-count">420</span>&nbsp;Menschen denken gerade über Schuhsohlen nach
+    </div>
+  </main>
+
+  <footer class="home-footer"></footer>
 </body>
 </html>

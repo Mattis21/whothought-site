@@ -63,7 +63,7 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-top:8px;
+  margin-top:12px;
 }
 
 .chart-controls.below {

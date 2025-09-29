@@ -238,43 +238,59 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const socketScript = document.createElement('script');
   socketScript.src = 'https://cdn.socket.io/4.6.1/socket.io.min.js';
   socketScript.onload = () => {
-    const socket = io('http://localhost:3000');
+    // 1) HIER DEINE SERVER-URL EINTRAGEN (aus Codex-Schritt unten kopieren):
+    // Beispiel: const WS_BASE = 'https://dein-codex-host-3000.preview.app';
+    const WS_BASE = 'http://localhost:3000'; // <-- DIESEN Wert gleich ersetzen!
+
+    const socket = io(WS_BASE, { transports: ['websocket'] });
+
+    // Einfache Normalisierung wie am Server: trim + lowercase + Mehrfachspaces -> 1 Space
+    const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);
+
     let currentTerm = '';
+
     function updateUI(term, count) {
       // Update home page live count
       const homeSpan = document.getElementById('live-count');
-      if (homeSpan && term === currentTerm) homeSpan.textContent = count;
+      if (homeSpan && norm(term) === norm(currentTerm)) homeSpan.textContent = count;
+
       // Update results page live count and badge
       const resultsSpan = document.getElementById('results-live-count');
-      if (resultsSpan && term === currentTerm) {
+      if (resultsSpan && norm(term) === norm(currentTerm)) {
         resultsSpan.textContent = count;
         const badge = document.getElementById('chartBadge');
         if (badge) badge.textContent = `${count} live`;
       }
     }
+
     socket.on('updateCount', ({ term, count }) => updateUI(term, count));
-    function emitTerm(term) {
+
+    function emitTerm(raw) {
+      const term = norm(raw);
       if (!term || term === currentTerm) return;
       currentTerm = term;
       socket.emit('searchTerm', term);
     }
+
     // Home page search
     const homeInput = document.getElementById('home-search');
     if (homeInput) {
-      homeInput.addEventListener('input', e => emitTerm(e.target.value.trim()));
-      homeInput.addEventListener('keypress', e => {
-        if (e.key === 'Enter') emitTerm(e.target.value.trim());
-      });
+      homeInput.addEventListener('input', e => emitTerm(e.target.value));
+      homeInput.addEventListener('keypress', e => { if (e.key === 'Enter') emitTerm(e.target.value); });
     }
+
     // Results page search
     const resultsInput = document.getElementById('results-search');
     if (resultsInput) {
-      // Emit initial term from query params
+      // Initialterm aus ?q=
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       if (q) emitTerm(q);
-      resultsInput.addEventListener('keypress', e => {
-        if (e.key === 'Enter') emitTerm(e.target.value.trim());
+
+      resultsInput.addEventListener('keypress', e => { if (e.key === 'Enter') emitTerm(e.target.value); });
+      resultsInput.addEventListener('input', e => {
+        // Optional: direkt beim Tippen „einsortieren“
+        emitTerm(e.target.value);
       });
     }
   };

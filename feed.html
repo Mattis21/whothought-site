@@ -38,30 +38,24 @@
           <div id="results-change" class="results-change">+0 in den letzten 5 Minuten</div>
         </div>
 
-        <!-- Region --7d
-        <div class="controls-row">
-          <div class="categories" role="tablist" aria-label="Region">
-            <button class="category active" type="button">Global</button>
-            <button class="category" type="button">DE</button>
-          </div>
-        </div>
+        <!-- Chart -->
+        <div class="chart-wrapper large">
+          <canvas id="liveChart"></canvas>
 
-       <!-- Chart -->
-<div class="chart-wrapper large">
-  <canvas id="liveChart"></canvas>
-  
-<!-- Zeitraum-Buttons UNTER dem Chart, im Panel -->
-<div class="chart-controls below">
-  <<button class="time-btn active" data-range="24h" type="button">1&nbsp;T</button>
-<button class="time-btn" data-range="7d" type="button">1&nbsp;W</button>
-<button class="time-btn" data-range="30d" type="button">1&nbsp;M</button>
-<button class="time-btn" data-range="1y" type="button">1&nbsp;J</button>
-<button class="time-btn" data-range="max" type="button">Max</button>
-</div>
+          <!-- Zeitraum-Buttons UNTER dem Chart, im Panel -->
+          <div class="chart-controls below">
+            <button class="time-btn active" data-range="24h" type="button">1&nbsp;T</button>
+            <button class="time-btn" data-range="7d" type="button">1&nbsp;W</button>
+            <button class="time-btn" data-range="30d" type="button">1&nbsp;M</button>
+            <button class="time-btn" data-range="1y" type="button">1&nbsp;J</button>
+            <button class="time-btn" data-range="max" type="button">Max</button>
+          </div>
+
+          <!-- Live-Badge unten rechts IM Chart -->
+          <div id="chartBadge" class="chart-badge">—</div>
+        </div>
+      </div>
     </section>
-  <!-- Live-Badge unten rechts IM Chart -->
-  <div id="chartBadge" class="chart-badge">—</div>
-</div>
 
     <!-- Rechte Spalte -->
     <aside class="right-col">

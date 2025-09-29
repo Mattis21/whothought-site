@@ -20,7 +20,7 @@ function initHomePage() {
   }
   function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
   i
-    f (searchInput) {
+    if (searchInput) {
     searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
     searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
   }

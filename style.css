@@ -91,15 +91,6 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
 }
 
 
-/* Live-Badge unten rechts IM Chart */
-.chart-badge{
-  position:absolute; right:14px; bottom:12px;
-  padding:.35rem .6rem; border-radius:8px;
-  background:rgba(12,18,40,0.85);
-  border:1px solid rgba(255,255,255,0.15);
-  font-size:.78rem; color:#cfe6ff;
-}
-
 /* Right rail */
 .right-col{ position:sticky; top:22px; height:fit-content; }
 .right-col h3{ margin-bottom:10px; font-size:1.02rem; }

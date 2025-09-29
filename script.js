@@ -19,7 +19,8 @@ function initHomePage() {
       li.addEventListener('click',()=>goToResults(i.text)); suggestionsList.appendChild(li); });
   }
   function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
-  if (searchInput) {
+  i
+    f (searchInput) {
     searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
     searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
   }
@@ -230,3 +231,52 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(document.getElementById('home-search')) initHomePage();
   if(document.getElementById('results-search') || document.getElementById('liveChart')) initResultsPage();
 });
+
+
+// ===== Realtime Socket.IO integration =====
+(function(){
+  const socketScript = document.createElement('script');
+  socketScript.src = 'https://cdn.socket.io/4.6.1/socket.io.min.js';
+  socketScript.onload = () => {
+    const socket = io('http://localhost:3000');
+    let currentTerm = '';
+    function updateUI(term, count) {
+      // Update home page live count
+      const homeSpan = document.getElementById('live-count');
+      if (homeSpan && term === currentTerm) homeSpan.textContent = count;
+      // Update results page live count and badge
+      const resultsSpan = document.getElementById('results-live-count');
+      if (resultsSpan && term === currentTerm) {
+        resultsSpan.textContent = count;
+        const badge = document.getElementById('chartBadge');
+        if (badge) badge.textContent = `${count} live`;
+      }
+    }
+    socket.on('updateCount', ({ term, count }) => updateUI(term, count));
+    function emitTerm(term) {
+      if (!term || term === currentTerm) return;
+      currentTerm = term;
+      socket.emit('searchTerm', term);
+    }
+    // Home page search
+    const homeInput = document.getElementById('home-search');
+    if (homeInput) {
+      homeInput.addEventListener('input', e => emitTerm(e.target.value.trim()));
+      homeInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') emitTerm(e.target.value.trim());
+      });
+    }
+    // Results page search
+    const resultsInput = document.getElementById('results-search');
+    if (resultsInput) {
+      // Emit initial term from query params
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q');
+      if (q) emitTerm(q);
+      resultsInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') emitTerm(e.target.value.trim());
+      });
+    }
+  };
+  document.head.appendChild(socketScript);
+})();

@@ -134,3 +134,7 @@ canvas#liveChart{ width:100% !important; height:100% !important; }
 .suggestions .suggestion-count{ font-size:.9rem; color:#88a8ff; }
 .home-live-ticker{ margin-top:3rem; font-size:1rem; color:#88a8ff; }
 .home-footer{ height:4rem; }
+/* Live-Badge ausblenden */
+.chart-badge {
+  display: none;
+}

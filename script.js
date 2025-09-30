@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   socketScript.onload = () => {
     // 👉👉 HIER KOMMT GLEICH DEINE SERVER-URL REIN (Schritt 3):
     // ZUERST SO LASSEN, dann gleich ersetzen!
-    const WS_BASE = 'http://localhost:3000';
+    const WS_BASE = 'https://whothought.onrender.com';
 
     const socket = io(WS_BASE, { transports: ['websocket'] });
     const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);

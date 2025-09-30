@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WHOthought – Startseite</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js?v=3"></script>
+  <script defer src="script.js?v=6"></script>
 </head>
 <body class="dark-background">
   <header class="home-header">
@@ -17,22 +17,17 @@
     <div class="question-bubble">Was denkst du gerade?</div>
 
     <!-- Suchfeld mit Vorschlägen -->
-<div class="home-search-wrapper">
-  <form onsubmit="event.preventDefault(); var q=document.getElementById('home-search').value.trim(); if(q){ window.location.href='feed.html?q='+encodeURIComponent(q); }">
-    <input
-      type="text"
-      id="home-search"
-      class="home-search-input"
-      placeholder="Gib einen Gedanken ein…"
-      autocomplete="off"
-      aria-label="Gedanke eingeben"
-    />
-    <!-- versteckter Submit, damit Enter sicher auslöst -->
-    <button type="submit" style="display:none"></button>
-  </form>
-  <ul id="suggestions" class="suggestions"></ul>
-</div>
-
+    <div class="home-search-wrapper">
+      <input
+        type="text"
+        id="home-search"
+        class="home-search-input"
+        placeholder="Gib einen Gedanken ein…"
+        autocomplete="off"
+        aria-label="Gedanke eingeben"
+      />
+      <ul id="suggestions" class="suggestions"></ul>
+    </div>
 
     <!-- Live-Ticker Hinweis -->
     <div id="home-live-ticker" class="home-live-ticker">

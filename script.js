@@ -255,26 +255,35 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const socketScript = document.createElement('script');
   socketScript.src = 'https://cdn.socket.io/4.6.1/socket.io.min.js';
   socketScript.onload = () => {
-    // 👉👉 HIER KOMMT GLEIsocket.on('connect', () => {
-  if (currentTerm) socket.emit('searchTerm', currentTerm);
-});
-socket.on('reconnect', () => {
-  if (currentTerm) socket.emit('searchTerm', currentTerm);
-});
-CH DEINE SERVER-URL REIN (Schritt 3):
-    // ZUERST SO LASSEN, dann gleich ersetzen!
+    // Deine Server-URL (Render)
     const WS_BASE = 'https://whothought.onrender.com';
 
+    // Socket verbinden
     const socket = io(WS_BASE, { transports: ['websocket'] });
-    
-    const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);
+
+    // Merker für aktuellen Begriff
     let currentTerm = '';
 
+    // Reconnect: nach Verbindungsaufbau/Neuaufbau wieder anmelden
+    socket.on('connect', () => {
+      if (currentTerm) socket.emit('searchTerm', currentTerm);
+    });
+    socket.on('reconnect', () => {
+      if (currentTerm) socket.emit('searchTerm', currentTerm);
+    });
+
+    // Normalisierung wie am Server
+    const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);
+
+    // UI aktualisieren
     function updateUI(term, count) {
-      if (document.getElementById('home-live-ticker')) {
+      // Home
+      const homeTicker = document.getElementById('home-live-ticker');
+      if (homeTicker) {
         const homeSpan = document.getElementById('live-count');
         if (homeSpan && norm(term) === norm(currentTerm)) homeSpan.textContent = count;
       }
+      // Results
       const resultsSpan = document.getElementById('results-live-count');
       if (resultsSpan && norm(term) === norm(currentTerm)) {
         resultsSpan.textContent = count;
@@ -285,6 +294,7 @@ CH DEINE SERVER-URL REIN (Schritt 3):
 
     socket.on('updateCount', ({ term, count }) => updateUI(term, count));
 
+    // Begriff an den Server melden
     function emitTerm(raw) {
       const term = norm(raw);
       if (!term || term === currentTerm) return;
@@ -302,6 +312,7 @@ CH DEINE SERVER-URL REIN (Schritt 3):
     // Results page search
     const resultsInput = document.getElementById('results-search');
     if (resultsInput) {
+      // Initialterm aus ?q=
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       if (q) emitTerm(q);
@@ -309,6 +320,17 @@ CH DEINE SERVER-URL REIN (Schritt 3):
       resultsInput.addEventListener('input', e => emitTerm(e.target.value));
       resultsInput.addEventListener('keypress', e => { if (e.key === 'Enter') emitTerm(e.target.value); });
     }
+
+    // 🔁 Fix B: „Wachhalten“ (alle 45s ping + ggf. erneut anmelden)
+    setInterval(() => {
+      try { fetch(WS_BASE + '/'); } catch (e) {}
+      if (currentTerm) socket.emit('searchTerm', currentTerm);
+    }, 45000);
+
+    // Wenn Tab wieder sichtbar wird, erneut anmelden (hilft nach Sleep)
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && currentTerm) socket.emit('searchTerm', currentTerm);
+    });
   };
   document.head.appendChild(socketScript);
 })();

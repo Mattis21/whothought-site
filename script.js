@@ -255,11 +255,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const socketScript = document.createElement('script');
   socketScript.src = 'https://cdn.socket.io/4.6.1/socket.io.min.js';
   socketScript.onload = () => {
-    // 👉👉 HIER KOMMT GLEICH DEINE SERVER-URL REIN (Schritt 3):
+    // 👉👉 HIER KOMMT GLEIsocket.on('connect', () => {
+  if (currentTerm) socket.emit('searchTerm', currentTerm);
+});
+socket.on('reconnect', () => {
+  if (currentTerm) socket.emit('searchTerm', currentTerm);
+});
+CH DEINE SERVER-URL REIN (Schritt 3):
     // ZUERST SO LASSEN, dann gleich ersetzen!
     const WS_BASE = 'https://whothought.onrender.com';
 
     const socket = io(WS_BASE, { transports: ['websocket'] });
+    
     const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);
     let currentTerm = '';
 

@@ -12,33 +12,18 @@ function initHomePage() {
     { text: 'Sneaker neue Modelle', count: 870 },
     { text: 'Barfußlaufen Vorteile', count: 310 },
   ];
-
-  function updateSuggestions(v){
-    suggestionsList.innerHTML='';
-    if(!v) return;
+  function updateSuggestions(v){ suggestionsList.innerHTML=''; if(!v) return;
     const m = suggestionData.filter(i => i.text.toLowerCase().includes(v.toLowerCase()));
-    m.forEach(i => {
-      const li=document.createElement('li');
+    m.forEach(i => { const li=document.createElement('li');
       li.innerHTML=`<span>${i.text}</span><span class="suggestion-count">${i.count} live</span>`;
-      li.addEventListener('click',()=>goToResults(i.text));
-      suggestionsList.appendChild(li);
-    });
+      li.addEventListener('click',()=>goToResults(i.text)); suggestionsList.appendChild(li); });
   }
-
   function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
-
-  // ✅ fix: richtiger if-Block
-  if (searchInput) {
+  i
+    if (searchInput) {
     searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
-    searchInput.addEventListener('keypress',e=>{
-      if(e.key==='Enter'){
-        e.preventDefault();
-        const q=searchInput.value.trim();
-        if(q) goToResults(q);
-      }
-    });
+    searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
   }
-
   if (liveTicker) {
     const item = suggestionData[getRandomInt(0, suggestionData.length-1)];
     liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
@@ -59,12 +44,10 @@ function initResultsPage() {
 
   const baseCount = getRandomInt(200, 1500);
   const diff = getRandomInt(-50, 50);
-  if (liveCountElem) liveCountElem.textContent = baseCount;
-  if (changeElem) {
-    const diffText = diff >= 0 ? `▲ Zuwachs +${diff}` : `▼ Abnahme ${Math.abs(diff)}`;
-    changeElem.textContent = `${diffText} in den letzten 5 Minuten`;
-    changeElem.style.color = diff >= 0 ? '#2fd472' : '#e3626b';
-  }
+  liveCountElem.textContent = baseCount;
+  const diffText = diff >= 0 ? `▲ Zuwachs +${diff}` : `▼ Abnahme ${Math.abs(diff)}`;
+  changeElem.textContent = `${diffText} in den letzten 5 Minuten`;
+  changeElem.style.color = diff >= 0 ? '#2fd472' : '#e3626b';
 
   drawChart();
   if (badge) badge.textContent = `${baseCount} live`;
@@ -110,16 +93,12 @@ function initResultsPage() {
   // Search enter
   if(resultsSearch){
     resultsSearch.addEventListener('keypress', e=>{
-      if(e.key==='Enter'){
-        e.preventDefault();
-        const q=resultsSearch.value.trim();
-        if(q) window.location.href=`feed.html?q=${encodeURIComponent(q)}`;
-      }
+      if(e.key==='Enter'){ e.preventDefault(); const q=resultsSearch.value.trim(); if(q) window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
     });
   }
 }
 
-// ===== Chart.js =====
+// ===== Chart.js (Ãsen-Look + Crosshair + Tooltip) =====
 let myChart;
 let currentRegion = 'global';
 
@@ -128,11 +107,11 @@ const chartData = {
   '24h': { labels: Array.from({length:24},(_,i)=>`${i+1} h`),  data: Array.from({length:24},()=>getRandomInt(120,520)) },
   '7d' : { labels: Array.from({length:7 },(_,i)=>`${i+1} d`),  data: Array.from({length:7 },()=>getRandomInt(120,520)) },
   '30d': { labels: Array.from({length:30},(_,i)=>`${i+1} d`),  data: Array.from({length:30},()=>getRandomInt(120,520)) },
-  '1y' : { labels: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], data: Array.from({length:12},()=>getRandomInt(120,520)) },
+  '1y' : { labels: ['Jan','Feb','MÃ¤r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'], data: Array.from({length:12},()=>getRandomInt(120,520)) },
   'max': { labels: ['2019','2020','2021','2022','2023','2024','2025'], data: Array.from({length:7},()=>getRandomInt(120,520)) },
 };
 
-// DE ~ 60% von global
+// Generate DE dataset based on global data
 const chartDataDe = {};
 for (const range in chartData) {
   chartDataDe[range] = {
@@ -141,6 +120,7 @@ for (const range in chartData) {
   };
 }
 
+// dataset builder (gradient fill)
 function makeDataset(ctx, data){
   const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
   grad.addColorStop(0, 'rgba(109,213,250,0.28)');
@@ -157,9 +137,10 @@ function makeDataset(ctx, data){
   };
 }
 
+// crosshair plugin (vertical line on hover)
 const crosshairPlugin = {
   id: 'crosshair',
-  afterDatasetsDraw(chart) {
+  afterDatasetsDraw(chart, args, pluginOptions) {
     const {ctx, chartArea:{top,bottom}, tooltip} = chart;
     const active = tooltip && tooltip.getActiveElements && tooltip.getActiveElements();
     if (!active || !active.length) return;
@@ -217,6 +198,7 @@ function drawChart(){
     },
   });
 
+  // set badge to latest value
   const last = data[data.length-1];
   const badge = document.getElementById('chartBadge');
   if (badge) badge.textContent = `${last} live`;
@@ -250,64 +232,50 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(document.getElementById('results-search') || document.getElementById('liveChart')) initResultsPage();
 });
 
+
 // ===== Realtime Socket.IO integration =====
 (function(){
   const socketScript = document.createElement('script');
   socketScript.src = 'https://cdn.socket.io/4.6.1/socket.io.min.js';
   socketScript.onload = () => {
-    // 👉👉 HIER KOMMT GLEIsocket.on('connect', () => {
-  if (currentTerm) socket.emit('searchTerm', currentTerm);
-});
-socket.on('reconnect', () => {
-  if (currentTerm) socket.emit('searchTerm', currentTerm);
-});
-CH DEINE SERVER-URL REIN (Schritt 3):
-    // ZUERST SO LASSEN, dann gleich ersetzen!
-    const WS_BASE = 'https://whothought.onrender.com';
-
-    const socket = io(WS_BASE, { transports: ['websocket'] });
-    
-    const norm = (q) => (q || '').trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 140);
+    const socket = io('http://localhost:3000');
     let currentTerm = '';
-
     function updateUI(term, count) {
-      if (document.getElementById('home-live-ticker')) {
-        const homeSpan = document.getElementById('live-count');
-        if (homeSpan && norm(term) === norm(currentTerm)) homeSpan.textContent = count;
-      }
+      // Update home page live count
+      const homeSpan = document.getElementById('live-count');
+      if (homeSpan && term === currentTerm) homeSpan.textContent = count;
+      // Update results page live count and badge
       const resultsSpan = document.getElementById('results-live-count');
-      if (resultsSpan && norm(term) === norm(currentTerm)) {
+      if (resultsSpan && term === currentTerm) {
         resultsSpan.textContent = count;
         const badge = document.getElementById('chartBadge');
         if (badge) badge.textContent = `${count} live`;
       }
     }
-
     socket.on('updateCount', ({ term, count }) => updateUI(term, count));
-
-    function emitTerm(raw) {
-      const term = norm(raw);
+    function emitTerm(term) {
       if (!term || term === currentTerm) return;
       currentTerm = term;
       socket.emit('searchTerm', term);
     }
-
     // Home page search
     const homeInput = document.getElementById('home-search');
     if (homeInput) {
-      homeInput.addEventListener('input', e => emitTerm(e.target.value));
-      homeInput.addEventListener('keypress', e => { if (e.key === 'Enter') emitTerm(e.target.value); });
+      homeInput.addEventListener('input', e => emitTerm(e.target.value.trim()));
+      homeInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') emitTerm(e.target.value.trim());
+      });
     }
-
     // Results page search
     const resultsInput = document.getElementById('results-search');
     if (resultsInput) {
+      // Emit initial term from query params
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       if (q) emitTerm(q);
-
-      resultsInput.addEventListener('input', e => emitTerm(e.target.value));
-      resultsInput.addEventListener('keypress', e => { if (e.key === 'Enter') emitTerm(e.target.value); });
+      resultsInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') emitTerm(e.target.value.trim());
+      });
     }
   };
   document.head.appendChild(socketScript);

@@ -18,12 +18,13 @@ function initHomePage() {
       li.innerHTML=`<span>${i.text}</span><span class="suggestion-count">${i.count} live</span>`;
       li.addEventListener('click',()=>goToResults(i.text)); suggestionsList.appendChild(li); });
   }
-  function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
-  i
-    if (searchInput) {
-    searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
-    searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
-  }
+function goToResults(q){ window.location.href=`feed.html?q=${encodeURIComponent(q)}`; }
+
+if (searchInput) {
+  searchInput.addEventListener('input',e=>updateSuggestions(e.target.value));
+  searchInput.addEventListener('keypress',e=>{ if(e.key==='Enter'){ e.preventDefault(); const q=searchInput.value.trim(); if(q) goToResults(q);} });
+}
+  
   if (liveTicker) {
     const item = suggestionData[getRandomInt(0, suggestionData.length-1)];
     liveTicker.innerHTML = `🔥 <span id="live-count">${item.count}</span> Menschen denken gerade über <strong>${item.text.split(' ')[0]}</strong> nach`;
